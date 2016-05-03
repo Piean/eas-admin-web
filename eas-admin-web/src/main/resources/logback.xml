@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true" scanPeriod="10 seconds" debug="true">
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!--<filter class="ch.qos.logback.classic.filter.LevelFilter">-->
+            <!--<level>ERROR</level>-->
+            <!--<onMatch>ACCEPT</onMatch>-->
+            <!--<onMismatch>DENY</onMismatch>-->
+        <!--</filter>-->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${log.level}</level>
+        </filter>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+            <pattern>%d{HH:mm:ss.SSS} [%t] %-5level %X %logger{32}.%M:%L - %msg%n</pattern>
+        </layout>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <Append>true</Append>
+        <file>${log.dir}/eas-admin-web.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--日志文件保留天数 -->
+            <maxHistory>30</maxHistory>
+            <!--日志文件输出的文件名 -->
+            <fileNamePattern>${log.dir}/eas-admin-web.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <charset>UTF-8</charset> <!-- 设置字符集 -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %X %logger{32}.%M:%L - %msg%n</pattern>
+        </layout>
+    </appender>
+
+    <logger name="org.springframework" level="ERROR" />
+
+    <root level="${log.level}">
+        <appender-ref ref="FILE" />
+        <appender-ref ref="STDOUT" />
+    </root>
+
+    <!--<appender name="batch_add_kindpay" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+        <!--<immediateFlush>false</immediateFlush>-->
+        <!--<bufferedIO>true</bufferedIO>-->
+        <!--<Append>true</Append>-->
+
+        <!--<file>${log.dir}/batch_add_kindpay.log</file>-->
+        <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+            <!--&lt;!&ndash; keep 7 days worth of history &ndash;&gt;-->
+            <!--<maxHistory>300</maxHistory>-->
+            <!--<fileNamePattern>${log.dir}/batch_add_kindpay.%d{yyyy-MM-dd}.log.zip</fileNamePattern>-->
+        <!--</rollingPolicy>-->
+        <!--<layout class="ch.qos.logback.classic.PatternLayout">-->
+            <!--<charset>UTF-8</charset> &lt;!&ndash; 此处设置字符集 &ndash;&gt;-->
+            <!--<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{32}.%M:%L %msg%n</pattern>-->
+        <!--</layout>-->
+    <!--</appender>-->
+
+    <!--<logger name="batchAddKindPay" additivity="false">-->
+        <!--<level>WARN</level>-->
+        <!--<appender-ref ref="STDOUT"/>-->
+        <!--<appender-ref ref="batch_add_kindpay"/>-->
+    <!--</logger>-->
+
+</configuration>  
