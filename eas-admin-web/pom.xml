@@ -12,10 +12,11 @@
         <skip_maven_deploy>false</skip_maven_deploy>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <slf4j.version>1.7.7</slf4j.version>
-        <logback.version>1.0.13</logback.version>
-        <spring.version>4.2.5</spring.version>
-        <velocity.version>1.6.1</velocity.version>
+        <slf4j.version>1.7.21</slf4j.version>
+        <logback.version>1.1.7</logback.version>
+        <aspectj.version>1.8.9</aspectj.version>
+        <spring.version>4.2.5.RELEASE</spring.version>
+        <velocity.version>1.7</velocity.version>
         <velocity-tools.version>2.0</velocity-tools.version>
     </properties>
 
@@ -53,7 +54,7 @@
 
         <!--velocity-->
         <dependency>
-            <groupId>velocity</groupId>
+            <groupId>org.apache.velocity</groupId>
             <artifactId>velocity</artifactId>
             <version>${velocity.version}</version>
         </dependency>
@@ -61,6 +62,18 @@
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity-tools</artifactId>
             <version>${velocity-tools.version}</version>
+        </dependency>
+
+        <!-- AspectJ -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>${aspectj.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectj.version}</version>
         </dependency>
 
         <!-- Spring相关配置 -->
@@ -197,5 +210,57 @@
             </exclusions>
         </dependency>
     </dependencies>
+
+
+    <build>
+        <finalName>backoperation</finalName>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <webResources>
+                        <resource>
+                            <directory>src/main/web/WEB-INF</directory>
+                            <filtering>true</filtering>
+                            <includes>
+                                <include>**/*.properties</include>
+                                <include>**/*.xml</include>
+                            </includes>
+                            <targetPath>WEB-INF</targetPath>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
+        </plugins>
+        <filters>
+            <filter>src/main/filter/${env}.properties</filter>
+        </filters>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                    <include>**/*.dic</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>develop</id>
+            <properties>
+                <env>develop</env>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+    </profiles>
 
 </project>
